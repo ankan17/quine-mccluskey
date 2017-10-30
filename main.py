@@ -167,9 +167,9 @@ class QuineMccluskey():
                     start += 1
                 else:
                     for row in self.prime_implicant_chart:
-                        columns.pop(start)
                         row[1].pop(start)
-                        flag = False
+                    columns.pop(start)
+                    flag = False
                     end -= 1
 
             if columns == []:

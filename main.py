@@ -116,9 +116,6 @@ class QuineMccluskey():
                     if self.prime_implicant_chart[pos][0] not in essential_prime_implicants:
                         essential_prime_implicants.append(self.prime_implicant_chart[pos][0])
 
-
-            print(self.prime_implicant_chart)
-
             start, end = 0, len(self.prime_implicant_chart)
             while start < end:
                 row = self.prime_implicant_chart[start]
@@ -162,10 +159,10 @@ class QuineMccluskey():
                 for col in columns_to_remove:
                     row[1].pop(col - columns_to_remove.index(col))
             for col in columns_to_remove:
-                    columns.pop(col - columns_to_remove.index(col))
+                columns.pop(col - columns_to_remove.index(col))
 
             start, end = 0, len(columns)
-            while start < end:
+            while start < end and end > 1:
                 if columns[start] not in columns[start+1:]:
                     start += 1
                 else:
@@ -174,6 +171,9 @@ class QuineMccluskey():
                         row[1].pop(start)
                         flag = False
                     end -= 1
+
+            if columns == []:
+                self.prime_implicant_chart = []
 
         return flag
 
@@ -249,9 +249,9 @@ class QuineMccluskey():
         reduced = False
         while (self.prime_implicant_chart != []) and not reduced:
             reduced = self._find_essential_pi()
-            reduced = self._remove_dominating_columns() and reduced 
+            reduced = self._remove_dominating_columns() and reduced
             reduced = self._remove_dominated_rows() and reduced
-        print(self.prime_implicant_chart)
+        
         if self.prime_implicant_chart != []:
             columns = [[row[1][i] for row in self.prime_implicant_chart] for i in range(len(self.prime_implicant_chart[0][1]))]
             P = []
@@ -290,6 +290,7 @@ class QuineMccluskey():
 
         """Prints all the possible answers from the generated solutions using switching variables"""
 
+        print("Following are the solutions to the given SOP function")
         variables = [chr(i) for i in range(65, 65+self.literals)]
         for solution in self.solutions:
             terms = []
